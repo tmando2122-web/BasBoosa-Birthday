@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Basbosa Birthday 🎂</title>
-
 <style>
 body {
     margin: 0;
@@ -13,7 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     text-align: center;
 }
 
@@ -24,16 +23,6 @@ body {
     box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     width: 90%;
     max-width: 400px;
-    animation: fadeIn 1s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {opacity:0; transform:translateY(20px);}
-    to {opacity:1; transform:translateY(0);}
-}
-
-h1 {
-    color: #ff4d6d;
 }
 
 input {
@@ -59,48 +48,101 @@ button:hover {
     background: #e63950;
 }
 
-#gift {
+#tabs {
     display: none;
+    margin-top: 20px;
 }
 
-#message {
-    margin-top: 15px;
+.tab-button {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 20px;
+    background: #ff4d6d;
+    color: white;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.tab-button:hover {
+    background: #e63950;
+}
+
+.tab-content {
+    margin-top: 20px;
+}
+
+img {
+    max-width: 100%;
+    margin: 10px 0;
+}
+
+#typing {
     font-size: 18px;
     color: #444;
+    white-space: pre-wrap;
 }
 </style>
 </head>
-
 <body>
 
-<div class="card">
-
-<h2>ادخلي الباسورد يا بسبوسة 🎀</h2>
-
-<input type="password" id="pass">
-<br>
+<div class="card" id="login-card">
+<h2>ادخلي الباسورد 🎀</h2>
+<input type="password" id="pass"><br>
 <button onclick="check()">دخول</button>
-
-<div id="gift">
-    <h1>🎉 Happy Birthday 🎉</h1>
-    <button onclick="showMessage()">افتحي الرسالة 💌</button>
-    <p id="message"></p>
 </div>
 
+<div class="card" id="tabs">
+    <div>
+        <span class="tab-button" onclick="showTab('song')">أغنية 🎵</span>
+        <span class="tab-button" onclick="showTab('photos')">صور 🖼</span>
+        <span class="tab-button" onclick="showTab('message')">رسالة 💌</span>
+    </div>
+
+    <div class="tab-content" id="tab-content">
+        <!-- المحتوى هيظهر هنا -->
+    </div>
 </div>
+
+<audio id="song" src="song.mp3"></audio>
 
 <script>
 function check() {
-    if (document.getElementById("pass").value == "1234") {
-        document.getElementById("gift").style.display = "block";
+    const pass = document.getElementById("pass").value;
+    if(pass === "512026") {
+        document.getElementById("login-card").style.display = "none";
+        document.getElementById("tabs").style.display = "block";
     } else {
         alert("الباسورد غلط 😅");
     }
 }
 
-function showMessage() {
-    document.getElementById("message").innerText =
-    "كل سنة وانتي طيبة يا أحلى بسبوسة في الدنيا ❤️ وجودك في حياتي نعمة كبيرة.";
+function showTab(tab) {
+    const content = document.getElementById("tab-content");
+    if(tab === 'song') {
+        content.innerHTML = "<p>اسمعي الأغنية دي 🎵</p>";
+        document.getElementById("song").play();
+    } else if(tab === 'photos') {
+        content.innerHTML = `
+            <div>
+                <img src="photo1.jpg"><p>طبعاً ومن غير كلام مش محتاج اقول ان دي اكتر صوره بحبها و عجباني مهما قولتي انها عاديه بس هى بنسبالي مش عاديه خالص ❤️</p>
+                <img src="photo2.jpg"><p>طبعا لقيت الصوره دي فيها شبه من اول واحده فا عجبتني برده و تقريبا انا اي صوره هتبصي فيها جنبك هتعجبني 💖</p>
+            </div>
+        `;
+    } else if(tab === 'message') {
+        const message = "كل سنة وانتي طيبة يا بسبوسة الجميلة!\nوجودك في حياتي نعمة كبيرة ❤️";
+        content.innerHTML = "<p id='typing'></p>";
+        let i = 0;
+        const typingEl = document.getElementById("typing");
+        typingEl.innerText = "";
+        function type() {
+            if(i < message.length) {
+                typingEl.innerText += message[i];
+                i++;
+                setTimeout(type, 50);
+            }
+        }
+        type();
+    }
 }
 </script>
 
