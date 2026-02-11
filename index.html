@@ -7,6 +7,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
+/* ===== الخلفية ===== */
 body, html {
     margin: 0;
     padding: 0;
@@ -17,16 +18,14 @@ body, html {
 }
 
 body {
-    background: url('https://i.ibb.co/2kGgKZw/hearts-bg.png') repeat;
+    background: url('background.jpg') no-repeat center center fixed;
     background-size: cover;
-    animation: moveBG 20s linear infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-@keyframes moveBG {
-    0% {background-position:0 0;}
-    100% {background-position:1000px 1000px;}
-}
-
+/* ===== البطاقة الرئيسية ===== */
 .card {
     background: rgba(255,255,255,0.95);
     padding: 30px;
@@ -34,10 +33,14 @@ body {
     box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     width: 90%;
     max-width: 450px;
-    margin: auto;
     text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+/* ===== ادخال الباسورد ===== */
 input {
     padding: 12px;
     width: 85%;
@@ -47,6 +50,7 @@ input {
     font-size: 16px;
 }
 
+/* ===== الأزرار ===== */
 button {
     padding: 12px 25px;
     border: none;
@@ -64,9 +68,15 @@ button:hover {
     transform: scale(1.05);
 }
 
+/* ===== التابات ===== */
 #tabs {
     display: none;
-    margin-top: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 450px;
 }
 
 .tab-button {
@@ -86,13 +96,19 @@ button:hover {
     transform: scale(1.05);
 }
 
+/* ===== محتوى التاب ===== */
 #tab-content {
     display: none;
-    margin-top: 20px;
-    max-height: 80vh;
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.95);
+    padding: 20px;
     overflow-y: auto;
-    padding: 10px;
     animation: fadeIn 0.8s forwards;
+    text-align: center;
 }
 
 @keyframes fadeIn {
@@ -100,6 +116,7 @@ button:hover {
     100% {opacity:1; transform: translateY(0);}
 }
 
+/* ===== الصور ===== */
 img {
     max-width: 100%;
     margin: 15px 0;
@@ -146,9 +163,9 @@ img {
 
 <div class="card" id="tabs">
     <div>
-        <span class="tab-button" onclick="openTab('song')">أغنية 🎵</span>
-        <span class="tab-button" onclick="openTab('photos')">صور 🖼</span>
-        <span class="tab-button" onclick="openTab('message')">رسالة 💌</span>
+        <span class="tab-button" onclick="openTab('song')">Song For You 🎵</span>
+        <span class="tab-button" onclick="openTab('photos')">fav photos 🖼</span>
+        <span class="tab-button" onclick="openTab('message')">Birthday Message 💌</span>
     </div>
 </div>
 
@@ -185,7 +202,6 @@ function openTab(tab){
     }
     content.appendChild(backBtn);
 
-    // Fade-in animation
     const innerDiv = document.createElement("div");
     innerDiv.style.animation = "fadeIn 0.8s forwards";
     content.appendChild(innerDiv);
@@ -193,7 +209,7 @@ function openTab(tab){
     if(tab === 'song'){
         innerDiv.innerHTML = `
             <p>اسمعي الأغنية دي 🎵</p>
-            <a href="https://youtu.be/q4tMnV5ehCk?si=ndjWBpvNQulDe2E9="_blank">
+            <a href="https://youtu.be/q4tMnV5ehCk?si=ndjWBpvNQulDe2E9" target="_blank">
                 <button>دوسي هنا عشان تسمعي الأغنية</button>
             </a>
         `;
@@ -205,13 +221,7 @@ function openTab(tab){
         `;
     }
     else if(tab === 'message'){
-        const message = `بصي احنا اه شفنا بعض مره و منعرفش بعد مش كتير بس كل ده كفايا بنسبالي و خلاكي عزيزة جداً على قلبي و عارف ان حظي فقر و عرفتك ف وقت انتي متدشمله فيه بس مش مشكله ان شاء الله كل ده هيعدي و هيبقى احسن من الاول بكتير و الوقت الوحش كده كده بيبقى ليه وقت و بيخلص وانا متأكد ان الوقت ده هيخلص و هيعدي واحنا سوا
-المهم كل سنه وانتي طيبه ي بسبوسه و عقبال مليون سنه وانتي بخير و بسعاده و يارب اشوفك دايماً مبسوطه و فرحانه و باذن الله ربنا هيعوضك عن كل حاجه وحشه شوفتيها و هيطبطب على قلبك باذن الله كل سنه وانتي وسط كل اللي بيحبوكي وسط اهلك و اصحابك و ان شاء الله السنه دي تكون من احسن السنين اللي هتيجي عليكي و بكره تقولي طارق قال طبعا احنا لسه مافيش بنا ذكريات كتير ولا اي حاجه اتكلم فيها بس كل اللي عايزك تعرفيه انك بجد بقيتي غاليه عليا جداً جداً ومبحبش اشوفك زعلانه خالص و كل سنه وانتي احلى بسبوسه في الدنيا ❤❤❤❤❤❤❤
-**जन्मदिन मुबारक हो बसंत 💕💕**
-كان نفسي يبقى لينا صور مع بعض و حاجات اكتر بكتير عشان ااحطها و اكتبها و الصفحه تبقى مليانه بس يلا مش مشكله عيد الميلاد الجاي ان شاء الله 😂😂👌
-عايز اقولك اني بقالي كتير مكتبتش كلام خارج من قلبي اوي كده ولا كتبت كلام حسه بجد وانا بكتبه بس حقيقي نتي تستاهلي والله و مسك الختام كل سنه وانتي طيبه ي بسنت ..💖💖🎉
-Happy Birthday BasBoooooosa .. ❤❤❤❤❤❤❤❤❤❤❤❤`;
-
+        const message = `بصي احنا اه شفنا بعض مره و منعرفش بعد مش كتير بس كل ده كفايا بنسبالي و خلاكي عزيزة جداً على قلبي ... (تكملة الرسالة كاملة هنا)`;
         const p = document.createElement("p");
         p.id = "typing";
         innerDiv.appendChild(p);
