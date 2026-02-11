@@ -7,24 +7,24 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
-body {
+body, html {
     margin: 0;
+    padding: 0;
     font-family: 'Cairo', sans-serif;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(-45deg, #ff758c, #ff7eb3, #ff9a76, #ffb199);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    text-align: center;
+    height: 100%;
+    width: 100%;
     overflow-x: hidden;
 }
 
-@keyframes gradientBG {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
+body {
+    background: url('https://i.ibb.co/2kGgKZw/hearts-bg.png') repeat;
+    background-size: cover;
+    animation: moveBG 20s linear infinite;
+}
+
+@keyframes moveBG {
+    0% {background-position:0 0;}
+    100% {background-position:1000px 1000px;}
 }
 
 .card {
@@ -34,12 +34,8 @@ body {
     box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     width: 90%;
     max-width: 450px;
-    animation: cardFade 1s ease forwards;
-}
-
-@keyframes cardFade {
-    0% {opacity:0; transform: translateY(-20px);}
-    100% {opacity:1; transform: translateY(0);}
+    margin: auto;
+    text-align: center;
 }
 
 input {
@@ -52,13 +48,14 @@ input {
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 25px;
     border: none;
     border-radius: 25px;
     background: #ff4d6d;
     color: white;
     cursor: pointer;
-    margin: 5px;
+    margin: 10px 0;
+    font-size: 18px;
     transition: all 0.3s ease;
 }
 
@@ -73,35 +70,39 @@ button:hover {
 }
 
 .tab-button {
-    display: inline-block;
-    padding: 10px 15px;
+    display: block;
+    padding: 20px;
     border-radius: 20px;
     background: #ff4d6d;
     color: white;
-    margin: 5px;
+    margin: 15px 0;
     cursor: pointer;
+    font-size: 20px;
     transition: all 0.3s ease;
 }
 
 .tab-button:hover {
     background: #e63950;
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
-.tab-content {
+#tab-content {
+    display: none;
     margin-top: 20px;
-    opacity: 0;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 10px;
     animation: fadeIn 0.8s forwards;
 }
 
 @keyframes fadeIn {
-    0% {opacity:0; transform: translateY(10px);}
+    0% {opacity:0; transform: translateY(20px);}
     100% {opacity:1; transform: translateY(0);}
 }
 
 img {
     max-width: 100%;
-    margin: 10px 0;
+    margin: 15px 0;
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     opacity: 0;
@@ -117,9 +118,22 @@ img {
     font-size: 17px;
     color: #333;
     white-space: pre-wrap;
-    min-height: 100px;
 }
 
+#backBtn {
+    display: block;
+    margin: 15px auto;
+    background: #4d94ff;
+}
+#backBtn:hover { background:#1e63c9; transform: scale(1.05); }
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.3);
+    border-radius: 3px;
+}
 </style>
 </head>
 <body>
@@ -132,20 +146,22 @@ img {
 
 <div class="card" id="tabs">
     <div>
-        <span class="tab-button" onclick="showTab('song')">أغنية 🎵</span>
-        <span class="tab-button" onclick="showTab('photos')">صور 🖼</span>
-        <span class="tab-button" onclick="showTab('message')">رسالة 💌</span>
-    </div>
-
-    <div class="tab-content" id="tab-content">
-        <!-- المحتوى هيظهر هنا -->
+        <span class="tab-button" onclick="openTab('song')">أغنية 🎵</span>
+        <span class="tab-button" onclick="openTab('photos')">صور 🖼</span>
+        <span class="tab-button" onclick="openTab('message')">رسالة 💌</span>
     </div>
 </div>
 
+<div id="tab-content">
+    <!-- المحتوى هيظهر هنا -->
+</div>
+
 <script>
+const passCode = "512026"; // الباسورد
+
 function check() {
     const pass = document.getElementById("pass").value;
-    if(pass === "512026") { // الباسورد اللي انت حددته
+    if(pass === passCode){
         document.getElementById("login-card").style.display = "none";
         document.getElementById("tabs").style.display = "block";
     } else {
@@ -153,39 +169,57 @@ function check() {
     }
 }
 
-function showTab(tab) {
+function openTab(tab){
+    document.getElementById("tabs").style.display = "none";
     const content = document.getElementById("tab-content");
-    content.style.opacity = 0;
-    setTimeout(()=>{ content.style.opacity = 1; }, 50); // fade effect
+    content.style.display = "block";
+    content.innerHTML = "";
+    
+    // زر الرجوع
+    const backBtn = document.createElement("button");
+    backBtn.id = "backBtn";
+    backBtn.innerText = "⬅ رجوع";
+    backBtn.onclick = ()=>{
+        content.style.display = "none";
+        document.getElementById("tabs").style.display = "block";
+    }
+    content.appendChild(backBtn);
 
-    if(tab === 'song') {
-        content.innerHTML = `
+    // Fade-in animation
+    const innerDiv = document.createElement("div");
+    innerDiv.style.animation = "fadeIn 0.8s forwards";
+    content.appendChild(innerDiv);
+
+    if(tab === 'song'){
+        innerDiv.innerHTML = `
             <p>اسمعي الأغنية دي 🎵</p>
-            <a href="https://youtu.be/q4tMnV5ehCk?si=ndjWBpvNQulDe2E9" target="_blank">
+            <a href="https://youtu.be/q4tMnV5ehCk?si=ndjWBpvNQulDe2E9="_blank">
                 <button>دوسي هنا عشان تسمعي الأغنية</button>
             </a>
         `;
-    } else if(tab === 'photos') {
-        content.innerHTML = `
-            <div>
-                <img src="photo1.jpg"><p>طبعاً ومن غير كلام مش محتاج اقول ان دي اكتر صوره بحبها و عجباني مهما قولتي انها عاديه بس هى بنسبالي مش عاديه خالص ❤️</p>
-                <img src="photo2.jpg"><p>طبعا لقيت الصوره دي فيها شبه من اول واحده فا عجبتني برده و تقريبا انا اي صوره هتبصي فيها جنبك هتعجبني 💖</p>
-            </div>
+    }
+    else if(tab === 'photos'){
+        innerDiv.innerHTML = `
+            <img src="photo1.jpg"><p>طبعاً ومن غير كلام مش محتاج اقول ان دي اكتر صوره بحبها و عجباني مهما قولتي انها عاديه بس هى بنسبالي مش عاديه خالص ❤️</p>
+            <img src="photo2.jpg"><p>طبعا لقيت الصوره دي فيها شبه من اول واحده فا عجبتني برده و تقريبا انا اي صوره هتبصي فيها جنبك هتعجبني 💖</p>
         `;
-    } else if(tab === 'message') {
+    }
+    else if(tab === 'message'){
         const message = `بصي احنا اه شفنا بعض مره و منعرفش بعد مش كتير بس كل ده كفايا بنسبالي و خلاكي عزيزة جداً على قلبي و عارف ان حظي فقر و عرفتك ف وقت انتي متدشمله فيه بس مش مشكله ان شاء الله كل ده هيعدي و هيبقى احسن من الاول بكتير و الوقت الوحش كده كده بيبقى ليه وقت و بيخلص وانا متأكد ان الوقت ده هيخلص و هيعدي واحنا سوا
 المهم كل سنه وانتي طيبه ي بسبوسه و عقبال مليون سنه وانتي بخير و بسعاده و يارب اشوفك دايماً مبسوطه و فرحانه و باذن الله ربنا هيعوضك عن كل حاجه وحشه شوفتيها و هيطبطب على قلبك باذن الله كل سنه وانتي وسط كل اللي بيحبوكي وسط اهلك و اصحابك و ان شاء الله السنه دي تكون من احسن السنين اللي هتيجي عليكي و بكره تقولي طارق قال طبعا احنا لسه مافيش بنا ذكريات كتير ولا اي حاجه اتكلم فيها بس كل اللي عايزك تعرفيه انك بجد بقيتي غاليه عليا جداً جداً ومبحبش اشوفك زعلانه خالص و كل سنه وانتي احلى بسبوسه في الدنيا ❤❤❤❤❤❤❤
 **जन्मदिन मुबारक हो बसंत 💕💕**
 كان نفسي يبقى لينا صور مع بعض و حاجات اكتر بكتير عشان ااحطها و اكتبها و الصفحه تبقى مليانه بس يلا مش مشكله عيد الميلاد الجاي ان شاء الله 😂😂👌
 عايز اقولك اني بقالي كتير مكتبتش كلام خارج من قلبي اوي كده ولا كتبت كلام حسه بجد وانا بكتبه بس حقيقي نتي تستاهلي والله و مسك الختام كل سنه وانتي طيبه ي بسنت ..💖💖🎉
 Happy Birthday BasBoooooosa .. ❤❤❤❤❤❤❤❤❤❤❤❤`;
-        content.innerHTML = "<p id='typing'></p>";
-        let i = 0;
-        const typingEl = document.getElementById("typing");
-        typingEl.innerText = "";
-        function type() {
-            if(i < message.length) {
-                typingEl.innerText += message[i];
+
+        const p = document.createElement("p");
+        p.id = "typing";
+        innerDiv.appendChild(p);
+
+        let i=0;
+        function type(){
+            if(i<message.length){
+                p.innerText += message[i];
                 i++;
                 setTimeout(type, 20);
             }
