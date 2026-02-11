@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>هدية 🎁</title>
+</head>
+<body>
+
+<h2>ادخلي الباسورد</h2>
+
+<input type="password" id="pass">
+<button onclick="check()">دخول</button>
+
+<div id="gift" style="display:none;">
+    <h1>عيد ميلاد سعيد 🎉</h1>
+
+    <button onclick="showMessage()">رسالة 💌</button>
+
+    <p id="message"></p>
+</div>
+
+<script>
+function check() {
+    if (document.getElementById("pass").value == "512026") {
+        document.getElementById("gift").style.display = "block";
+    } else {
+        alert("الباسورد غلط");
+    }
+}
+
+function showMessage() {
+    document.getElementById("message").innerText =
+    "كل سنة وانتي طيبة، ودايمًا تستاهلي الأحسن ❤️";
+}
+</script>
+
+</body>
+</html>
