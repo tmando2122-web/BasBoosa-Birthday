@@ -5,24 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Basbosa Birthday 🎂</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    font-family: 'Cairo', sans-serif;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    background: linear-gradient(-45deg, #ff758c, #ff7eb3, #ff9a76, #ffb199);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
     text-align: center;
+    overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
 }
 
 .card {
-    background: white;
+    background: rgba(255,255,255,0.95);
     padding: 30px;
     border-radius: 25px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     width: 90%;
-    max-width: 400px;
+    max-width: 450px;
+    animation: cardFade 1s ease forwards;
+}
+
+@keyframes cardFade {
+    0% {opacity:0; transform: translateY(-20px);}
+    100% {opacity:1; transform: translateY(0);}
 }
 
 input {
@@ -31,6 +48,7 @@ input {
     border-radius: 15px;
     border: 1px solid #ddd;
     margin: 10px 0;
+    font-size: 16px;
 }
 
 button {
@@ -41,11 +59,12 @@ button {
     color: white;
     cursor: pointer;
     margin: 5px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
 button:hover {
     background: #e63950;
+    transform: scale(1.05);
 }
 
 #tabs {
@@ -61,26 +80,46 @@ button:hover {
     color: white;
     margin: 5px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .tab-button:hover {
     background: #e63950;
+    transform: scale(1.1);
 }
 
 .tab-content {
     margin-top: 20px;
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
+}
+
+@keyframes fadeIn {
+    0% {opacity:0; transform: translateY(10px);}
+    100% {opacity:1; transform: translateY(0);}
 }
 
 img {
     max-width: 100%;
     margin: 10px 0;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    opacity: 0;
+    animation: fadeImg 1s forwards;
+}
+
+@keyframes fadeImg {
+    0% {opacity:0; transform: scale(0.95);}
+    100% {opacity:1; transform: scale(1);}
 }
 
 #typing {
-    font-size: 18px;
-    color: #444;
+    font-size: 17px;
+    color: #333;
     white-space: pre-wrap;
+    min-height: 100px;
 }
+
 </style>
 </head>
 <body>
@@ -103,12 +142,10 @@ img {
     </div>
 </div>
 
-<audio id="song" src="song.mp3"></audio>
-
 <script>
 function check() {
     const pass = document.getElementById("pass").value;
-    if(pass === "512026") {
+    if(pass === "512026") { // الباسورد اللي انت حددته
         document.getElementById("login-card").style.display = "none";
         document.getElementById("tabs").style.display = "block";
     } else {
@@ -118,9 +155,16 @@ function check() {
 
 function showTab(tab) {
     const content = document.getElementById("tab-content");
+    content.style.opacity = 0;
+    setTimeout(()=>{ content.style.opacity = 1; }, 50); // fade effect
+
     if(tab === 'song') {
-        content.innerHTML = "<p>اسمعي الأغنية دي 🎵</p>";
-        document.getElementById("song").play();
+        content.innerHTML = `
+            <p>اسمعي الأغنية دي 🎵</p>
+            <a href="https://youtu.be/q4tMnV5ehCk?si=ndjWBpvNQulDe2E9" target="_blank">
+                <button>دوسي هنا عشان تسمعي الأغنية</button>
+            </a>
+        `;
     } else if(tab === 'photos') {
         content.innerHTML = `
             <div>
@@ -129,7 +173,12 @@ function showTab(tab) {
             </div>
         `;
     } else if(tab === 'message') {
-        const message = "كل سنة وانتي طيبة يا بسبوسة الجميلة!\nوجودك في حياتي نعمة كبيرة ❤️";
+        const message = `بصي احنا اه شفنا بعض مره و منعرفش بعد مش كتير بس كل ده كفايا بنسبالي و خلاكي عزيزة جداً على قلبي و عارف ان حظي فقر و عرفتك ف وقت انتي متدشمله فيه بس مش مشكله ان شاء الله كل ده هيعدي و هيبقى احسن من الاول بكتير و الوقت الوحش كده كده بيبقى ليه وقت و بيخلص وانا متأكد ان الوقت ده هيخلص و هيعدي واحنا سوا
+المهم كل سنه وانتي طيبه ي بسبوسه و عقبال مليون سنه وانتي بخير و بسعاده و يارب اشوفك دايماً مبسوطه و فرحانه و باذن الله ربنا هيعوضك عن كل حاجه وحشه شوفتيها و هيطبطب على قلبك باذن الله كل سنه وانتي وسط كل اللي بيحبوكي وسط اهلك و اصحابك و ان شاء الله السنه دي تكون من احسن السنين اللي هتيجي عليكي و بكره تقولي طارق قال طبعا احنا لسه مافيش بنا ذكريات كتير ولا اي حاجه اتكلم فيها بس كل اللي عايزك تعرفيه انك بجد بقيتي غاليه عليا جداً جداً ومبحبش اشوفك زعلانه خالص و كل سنه وانتي احلى بسبوسه في الدنيا ❤❤❤❤❤❤❤
+**जन्मदिन मुबारक हो बसंत 💕💕**
+كان نفسي يبقى لينا صور مع بعض و حاجات اكتر بكتير عشان ااحطها و اكتبها و الصفحه تبقى مليانه بس يلا مش مشكله عيد الميلاد الجاي ان شاء الله 😂😂👌
+عايز اقولك اني بقالي كتير مكتبتش كلام خارج من قلبي اوي كده ولا كتبت كلام حسه بجد وانا بكتبه بس حقيقي نتي تستاهلي والله و مسك الختام كل سنه وانتي طيبه ي بسنت ..💖💖🎉
+Happy Birthday BasBoooooosa .. ❤❤❤❤❤❤❤❤❤❤❤❤`;
         content.innerHTML = "<p id='typing'></p>";
         let i = 0;
         const typingEl = document.getElementById("typing");
@@ -138,7 +187,7 @@ function showTab(tab) {
             if(i < message.length) {
                 typingEl.innerText += message[i];
                 i++;
-                setTimeout(type, 50);
+                setTimeout(type, 20);
             }
         }
         type();
@@ -148,4 +197,3 @@ function showTab(tab) {
 
 </body>
 </html>
-
